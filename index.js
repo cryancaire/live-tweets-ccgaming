@@ -64,6 +64,6 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', socket => {
-    console.log(`Connected`);
+    //console.log(`Connected`);
 });
 
