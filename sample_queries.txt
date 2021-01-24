@@ -1,0 +1,20 @@
+    let myUserId = '51774237';
+    
+    let user = { 
+        ids: '51774237'
+    };
+
+    let timeline = { 
+        "max_results": '1',
+        "tweet.fields": "created_at"
+    };
+
+    let search = {
+        'query': '#CthulhuSavesChristmas',
+        expansions: 'author_id',
+        'user.fields': 'description'
+    };
+
+    //const data = await client.get(`users/${myUserId}/tweets`, timeline)
+    //const data = await client.get(`tweets/search/recent`, search)
+    //console.log(data)
