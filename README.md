@@ -1,4 +1,7 @@
 # live-tweets
+
+![Example Image](/images/live-tweets.gif)
+
 Used https://www.npmjs.com/package/twitter-v2 as the base twitter api connection.
 
 Setup:
