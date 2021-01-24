@@ -29,4 +29,4 @@ These are basically the rules by which the stream of live tweets will be fed to 
 
 6. (Optional) Customize the css in public/css/style.css to your liking!
 
-That should be it! Feel free to tweet me @cryancaire for questions!
+That should be it! Feel free to ask questions!
