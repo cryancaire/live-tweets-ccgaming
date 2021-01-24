@@ -25,8 +25,8 @@ These are basically the rules by which the stream of live tweets will be fed to 
 
 4. Start the code by typing `npm run dev` in a terminal in the same directory.
 
-5. Add the browser source to your streaming software. URL = localhost:1234
+5. Add the browser source to your streaming software. URL is `localhost:1234`
 
-6. (Optional) Customize the css in public/css/style.css to your liking!
+6. (Optional) Customize the css in `public/css/style.css` to your liking!
 
 That should be it! Feel free to ask questions!
