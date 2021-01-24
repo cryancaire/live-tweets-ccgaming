@@ -6,9 +6,9 @@ Setup:
 1. You will need valid Twitter developer credentials in the form of a set of consumer keys. You can get early access V2 keys [here](https://developer.twitter.com/en/apply-for-access).
 
 2. Once you set that up, you must create a .env file and put the following variables (with your consumer key, secret and bearer token)
-TWITTER_CONSUMER_KEY=
-TWITTER_CONSUMER_SECRET=
-TWITTER_BEARER_TOKEN=
+`TWITTER_CONSUMER_KEY=`
+`TWITTER_CONSUMER_SECRET=`
+`TWITTER_BEARER_TOKEN=`
 
 3. Open index.js and find this and change `#CCGaming`, `#ccgaming`, and `@cryancaire` to your own values (feel free to add more or remove some values):
 These are basically the rules by which the stream of live tweets will be fed to this application. More info [here](https://developer.twitter.com/en/docs/tutorials/stream-tweets-in-real-time)
