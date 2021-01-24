@@ -1,4 +1,6 @@
-# live-tweets
+# live-tweets-ccgaming
+
+##Get a live feed of tweets to embed on stream or your website or anything!
 
 ![Example Image](/images/live-tweets.gif)
 
