@@ -1,14 +1,36 @@
 require('dotenv').config()
 const Twitter = require('twitter-v2');
 const socketio = require('socket.io');
+const mongoose = require ('mongoose');
+const bodyParser = require('body-parser');
+const Tweets = require('./models/Tweets');
 const express = require('express');
 const app = express();
+
+const mongoURL = process.env.MONGO_URL;
+const dbName = process.env.MONGO_DB;
+
+app.set('view engine', 'ejs');
+
+// for parsing application/json
+app.use(bodyParser.json()); 
+
+// for parsing application/xwww-
+app.use(bodyParser.urlencoded({ extended: true })); 
 
 app.use(express.static(__dirname + '/public'));
 const port = process.env.PORT || 1234;
 
 const server = app.listen(port, () => {
     console.log(`Server is listening on ${port}`);
+});
+
+mongoose.connect(`${mongoURL}/${dbName}?retryWrites=true&w=majority`, { useNewUrlParser: true, useUnifiedTopology: true });
+
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+  console.log('Connected to MongoDB')
 });
 
 const io = socketio(server);
@@ -49,8 +71,8 @@ async function getTweets () {
                 'username': theUser,
                 'tweet_text': data.text
             }
-            
-            io.emit('tweet', dataToSend);
+            saveTweet(theUser, data.text);
+            io.emit('replayTweet', dataToSend);
         }
         stream.close();
     }
@@ -63,7 +85,56 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 
-io.on('connection', socket => {
-    //console.log(`Connected`);
+app.get('/tweet', (req, res) => {
+    res.render("singleTweet");
 });
 
+app.get('/tweets', async (req, res) => {
+    let tweetMap = {};
+        const tweetList = await Tweets.find({}, (err, tweet) => {
+            tweetMap[tweet._id] = tweet;
+        }).then(data => {
+            res.render("listTweets", { tweets: tweetMap.undefined} );
+        });
+});
+
+app.get('/tweets/:date', async (req, res) => {
+    var dateObj;
+    if (req.params.date === 'today') {
+        dateObj = new Date();
+    } else {
+        dateObj = new Date(req.params.date);
+    }
+
+    dateObj = new Date();
+    var month = dateObj.getUTCMonth() + 1; //months from 1-12
+    var day = dateObj.getUTCDate();
+    var year = dateObj.getUTCFullYear();
+
+    newDate = year + "/" + month + "/" + day;
+
+    let tweetMap = {};
+        const tweetList = await Tweets.find({ tweetedDate : newDate }, (err, tweet) => {
+            tweetMap[tweet._id] = tweet;
+        }).then(data => {
+            res.render("listTweets", { tweets: tweetMap.undefined} );
+        });
+});
+
+io.on('connection', socket => {
+    socket.on('replayTweet', (info) => {
+        socket.broadcast.emit('replayTweet', info);
+    });
+});
+
+function saveTweet (name, text) {
+    const newTweet = new Tweets({
+        name: name,
+        text: text
+    });
+    newTweet.save(err => {
+        if (err) {
+            console.log(`An error has occurred: ${err}`);
+        }
+    });
+}
