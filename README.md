@@ -11,7 +11,7 @@
 ![GitHub followers](https://img.shields.io/github/followers/cryancaire?style=social)
 ![Twitter Follow](https://img.shields.io/twitter/follow/cryancaire?style=social)
 
-## Get a live feed of tweets to embed on stream or your website or anything!
+## Get a live popup of tweets to embed on stream or your website or anything!
 
 ![Example Image](/images/tweet_popup.gif)
 ![Example Image](/images/listoftweets.png)
