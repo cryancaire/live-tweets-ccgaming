@@ -13,7 +13,8 @@
 
 ## Get a live feed of tweets to embed on stream or your website or anything!
 
-![Example Image](/images/live-tweets.gif)
+![Example Image](/images/tweet_popup.gif)
+![Example Image](/images/listoftweets.png)
 
 Used https://www.npmjs.com/package/twitter-v2 as the base twitter api connection.
 
