@@ -59,5 +59,7 @@ These are basically the rules by which the stream of live tweets will be fed to 
 1. `/` - A list of tweets stored in memory - outdated
 2. `/tweet` - intended to display one tweet at a time and fade away after a few seconds
 3. `/tweets` - a list of tweets stored in a database with a "replay" button next to each of them
+4. `/tweets/today` - get the list of tweets from today
+5. `/tweets/{yyyy-m-d}` gets the list of tweets on the specified date
 
 That should be it! Feel free to ask questions!

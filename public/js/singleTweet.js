@@ -6,7 +6,7 @@ socketio.on('connection', () => {
     socketio.emit('connection', socket);
 });
 
-socketio.on('replayTweet', (info) => {
+socketio.on('replayTweet', (info) => { 
     $('.container').prepend(
         `<div class="input-group tweet" id=${info.id}>
         <div class="input-group-text name_text">${info.username}</div>
@@ -21,5 +21,4 @@ socketio.on('replayTweet', (info) => {
             containerToFade.remove();
         }, 2000);
     }, tweetTimer);
-    //$('#tweet-area').prepend(`<div class="tweet_container"><div class="tweet_username">${info.username}</div><div class="tweet_text">${info.tweet_text}</div></div>`);
 });

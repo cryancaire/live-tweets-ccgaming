@@ -12,10 +12,7 @@ const dbName = process.env.MONGO_DB;
 
 app.set('view engine', 'ejs');
 
-// for parsing application/json
 app.use(bodyParser.json()); 
-
-// for parsing application/xwww-
 app.use(bodyParser.urlencoded({ extended: true })); 
 
 app.use(express.static(__dirname + '/public'));
@@ -99,22 +96,19 @@ app.get('/tweets', async (req, res) => {
 });
 
 app.get('/tweets/:date', async (req, res) => {
-    var dateObj;
-    if (req.params.date === 'today') {
-        dateObj = new Date();
-    } else {
+    var dateObj = new Date();
+    if (req.params.date != 'today') {
         dateObj = new Date(req.params.date);
     }
 
-    dateObj = new Date();
+    //dateObj = new Date();
     var month = dateObj.getUTCMonth() + 1; //months from 1-12
     var day = dateObj.getUTCDate();
     var year = dateObj.getUTCFullYear();
 
-    newDate = year + "/" + month + "/" + day;
-
+    newDate = year + "-" + month + "-" + day;
     let tweetMap = {};
-        const tweetList = await Tweets.find({ tweetedDate : newDate }, (err, tweet) => {
+        const tweetList = await Tweets.find({ tweetedDate : { $eq: newDate } }, (err, tweet) => {
             tweetMap[tweet._id] = tweet;
         }).then(data => {
             res.render("listTweets", { tweets: tweetMap.undefined} );
@@ -125,16 +119,35 @@ io.on('connection', socket => {
     socket.on('replayTweet', (info) => {
         socket.broadcast.emit('replayTweet', info);
     });
+
+    socket.on('deleteTweet', (info) => {
+        deleteTweet(info.id);
+    });
 });
 
 function saveTweet (name, text) {
+    var dateObj = new Date();
+    var month = dateObj.getUTCMonth() + 1; //months from 1-12
+    var day = dateObj.getUTCDate();
+    var year = dateObj.getUTCFullYear();
+
+    newDate = year + "-" + month + "-" + day;
+
     const newTweet = new Tweets({
         name: name,
-        text: text
+        text: text,
+        tweet_date: newDate
     });
     newTweet.save(err => {
         if (err) {
             console.log(`An error has occurred: ${err}`);
         }
     });
+}
+
+function deleteTweet (id) {
+    Tweets.findByIdAndDelete(id, function (err) {
+        if(err) console.log(err);
+        console.log("Successful deletion");
+      });
 }
