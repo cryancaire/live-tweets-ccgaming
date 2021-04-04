@@ -87,31 +87,26 @@ app.get('/tweet', (req, res) => {
 });
 
 app.get('/tweets', async (req, res) => {
-    let tweetMap = {};
-        const tweetList = await Tweets.find({}, (err, tweet) => {
-            tweetMap[tweet._id] = tweet;
-        }).then(data => {
-            res.render("listTweets", { tweets: tweetMap.undefined} );
+        Tweets.find({}, (err, tweet) => {}).then(data => {
+            res.render("listTweets", { tweets: data} );
         });
 });
 
 app.get('/tweets/:date', async (req, res) => {
     var dateObj = new Date();
     if (req.params.date != 'today') {
-        dateObj = new Date(req.params.date);
+        dateObj = new Date(req.params.date + " CDT");
     }
 
     //dateObj = new Date();
-    var month = dateObj.getUTCMonth() + 1; //months from 1-12
-    var day = dateObj.getUTCDate();
-    var year = dateObj.getUTCFullYear();
+    var month = dateObj.getMonth() + 1; //months from 1-12
+    var day = dateObj.getDate();
+    var year = dateObj.getFullYear();
 
     newDate = year + "-" + month + "-" + day;
-    let tweetMap = {};
-        const tweetList = await Tweets.find({ tweetedDate : { $eq: newDate } }, (err, tweet) => {
-            tweetMap[tweet._id] = tweet;
-        }).then(data => {
-            res.render("listTweets", { tweets: tweetMap.undefined} );
+    //console.log(newDate, dateObj)
+        await Tweets.find({ tweetedDate : { $eq: newDate } }, (err) => {}).then(data => {
+            res.render("listTweets", { tweets: data} );
         });
 });
 
@@ -127,9 +122,9 @@ io.on('connection', socket => {
 
 function saveTweet (name, text) {
     var dateObj = new Date();
-    var month = dateObj.getUTCMonth() + 1; //months from 1-12
-    var day = dateObj.getUTCDate();
-    var year = dateObj.getUTCFullYear();
+    var month = dateObj.getMonth() + 1; //months from 1-12
+    var day = dateObj.getDate();
+    var year = dateObj.getFullYear();
 
     newDate = year + "-" + month + "-" + day;
 
