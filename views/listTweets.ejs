@@ -31,13 +31,17 @@
             max-width: 300px;
             width: auto;
         } 
+
+        h1 {
+            padding-bottom: 2%;
+        }
     </style>
 
     
 </head>
 <body>
     <div class="container">
-        <h1>CC Gaming Tweets</h1>
+        <h1>CC Gaming Tweets <button class="btn btn-primary" id="today_tweets">Today</button> <button class="btn btn-primary" id="all_tweets">All</button></h1>
         <div id="tweet-area">
         </div>
             <% if (tweets) { %>
@@ -46,17 +50,27 @@
                         <div class="input-group">
                             <div class="input-group-text name_text"><%= tweet.name %></div>
                             <div class="form-control tweet_text"><%= tweet.text %></div>
-                            <div class="input-group-text"><button class="btn btn-success" id="<%= tweet._id %>">Replay</button></div>
-                            <div class="input-group-text"><button class="btn btn-danger" id="<%= tweet._id %>">Delete?</button></div>
+                            <div class="input-group-text"><button class="btn btn-success replay" id="<%= tweet._id %>">Replay</button></div>
+                            <div class="input-group-text"><button class="btn btn-danger delete" id="<%= tweet._id %>">Delete?</button></div>
                         </div>
                     <% }); %>
                 <% } %>
     </div>
 
     <script>
+        let todayTweetBtn = document.querySelector('#today_tweets');
+        todayTweetBtn.addEventListener('click', () => {
+            window.location.href='/tweets/today';
+        })
+
+        let allTweetBtn = document.querySelector('#all_tweets');
+        allTweetBtn.addEventListener('click', () => {
+            window.location.href='/tweets';
+        })
+
         let socketio = io();
-        let replayButtons = document.querySelectorAll('.btn-success');
-        let deleteButtons = document.querySelectorAll('.btn-danger');
+        let replayButtons = document.querySelectorAll('.replay');
+        let deleteButtons = document.querySelectorAll('.delete');
         replayButtons.forEach(btn => {
             btn.addEventListener('click', (e) => {
                 let grandParent = btn.parentElement.parentElement;
