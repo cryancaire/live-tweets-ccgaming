@@ -49,7 +49,11 @@
                 <% tweets.forEach(function(tweet){ %>
                         <div class="input-group">
                             <div class="input-group-text name_text"><%= tweet.name %></div>
-                            <div class="form-control tweet_text"><%= tweet.text %></div>
+                            <div class="form-control tweet_text"><%= tweet.text %>
+                                <% if (tweet.tweet_url) { %>
+                                <br><a href="<%= tweet.tweet_url %>" target=_blank class="btn btn-outline-secondary">View Tweet</a>
+                                <% } %>
+                            </div>
                             <div class="input-group-text"><button class="btn btn-success replay" id="<%= tweet._id %>">Replay</button></div>
                             <div class="input-group-text"><button class="btn btn-danger delete" id="<%= tweet._id %>">Delete?</button></div>
                         </div>

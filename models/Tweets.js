@@ -20,7 +20,11 @@ const tweetSchema = new mongoose.Schema({
         type: String,
         required: true,
         default: newDate
-    }
+    },
+    'tweet_url': {
+        type: String,
+        require: false
+    },
 });
 
 module.exports = mongoose.model('Tweets', tweetSchema);

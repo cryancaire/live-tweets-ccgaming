@@ -5,6 +5,7 @@ const mongoose = require ('mongoose');
 const bodyParser = require('body-parser');
 const Tweets = require('./models/Tweets');
 const express = require('express');
+const { urlencoded } = require('body-parser');
 const app = express();
 
 const mongoURL = process.env.MONGO_URL;
@@ -61,14 +62,17 @@ async function getTweets () {
             let user = { 
                 ids: data['author_id']
             };
+
             let theUser = await client.get(`users`, user)
+            let url = `https://twitter.com/${theUser.data[0].id}/status/${data.id}`
             theUser = theUser.data[0].name;
 
             let dataToSend = {
                 'username': theUser,
-                'tweet_text': data.text
+                'tweet_text': data.text,
+                'tweet_url': url
             }
-            saveTweet(theUser, data.text);
+            saveTweet(theUser, data.text, url);
             io.emit('replayTweet', dataToSend);
         }
         stream.close();
@@ -120,7 +124,7 @@ io.on('connection', socket => {
     });
 });
 
-function saveTweet (name, text) {
+function saveTweet (name, text, url) {
     var dateObj = new Date();
     var month = dateObj.getMonth() + 1; //months from 1-12
     var day = dateObj.getDate();
@@ -131,7 +135,8 @@ function saveTweet (name, text) {
     const newTweet = new Tweets({
         name: name,
         text: text,
-        tweet_date: newDate
+        tweet_date: newDate,
+        tweet_url: url
     });
     newTweet.save(err => {
         if (err) {
